@@ -1,0 +1,29 @@
+import numpy as np
+
+np.random.seed(42)
+
+days = 252  # trading days in a year
+initial_price = 100
+
+# Daily % change between -3% and +3%
+daily_returns = np.random.uniform(-0.03, 0.03, days)
+
+# Price series
+prices = [initial_price]
+for r in daily_returns:
+    prices.append(prices[-1] * (1 + r))
+
+prices = np.array(prices)
+
+print("Final Price:", round(prices[-1], 2))
+print("Max Price:", round(prices.max(), 2))
+print("Min Price:", round(prices.min(), 2))
+print("Average Daily Return:", round(daily_returns.mean()*100, 2), "%")
+print("Volatility (Std Dev):", round(daily_returns.std()*100, 2), "%")
+
+# Moving average (10-day)
+moving_avg = np.convolve(prices, np.ones(10)/10, mode='valid')
+
+print("\nFirst 15 prices:", prices[:15])
+print("First 10-day Moving Avg:", moving_avg[:5])
+
